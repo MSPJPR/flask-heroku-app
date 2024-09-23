@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Satellite Link Budget Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        label, input, button { display: block; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Satellite Link Budget Calculator</h1>
+    <form action="/calculate" method="post">
+        <label for="altitude">Satellite Altitude (km):</label>
+        <input type="number" name="altitude" required>
+        <label for="frequency">Frequency (GHz):</label>
+        <input type="number" name="frequency" required>
+        <label for="power">Transmitter Power (dBm):</label>
+        <input type="number" name="power" required>
+        <label for="gain">Antenna Gain (dBi):</label>
+        <input type="number" name="gain" required>
+        <button type="submit">Calculate</button>
+    </form>
+    {% if eirp %}
+        <h2>EIRP: {{ eirp }} dBm</h2>
+    {% endif %}
+</body>
+</html>
