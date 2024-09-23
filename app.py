@@ -1,4 +1,3 @@
-  GNU nano 8.2                              app.py
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -21,4 +20,4 @@ def calculate():
     return render_template('index.html', eirp=eirp)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0',port=5000)
