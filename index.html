@@ -2,35 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.>
-    <title>Image Processing Tool</title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        .container { width: 50%; margin: auto; text-align: center; }
-        input { margin: 10px; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optical Fiber Communication System Simulator</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Image Processing Tool</h1>
-        <form action="/process" method="POST" enctype="multipart/form-d>
-            <label for="image">Choose an Image:</label><br>
-            <input type="file" name="image" id="image" accept="image/*">
-            <label for="filter">Choose a Filter:</label><br>
-            <select name="filter" id="filter">
-                <option value="brightness">Adjust Brightness</option>
-                <option value="contrast">Adjust Contrast</option>
-                <option value="grayscale">Convert to Grayscale</option>
-                <option value="sharpen">Sharpen Image</option>
-                <option value="smooth">Apply Smoothing Filter</option>
-                <option value="compress">Compress Image</option>
-            </select><br><br>
+    <h1>Optical Fiber Communication System Simulator</h1>
+    <form action="/simulate" method="POST">
+        <label for="fiber_type">Fiber Type:</label>
+        <select name="fiber_type">
+            <option value="Single-Mode">Single-Mode</option>
+            <option value="Multi-Mode">Multi-Mode</option>
+        </select><br>
 
-            <input type="submit" value="Apply Filter">
-        </form>
+        <label for="distance">Distance (km):</label>
+        <input type="text" name="distance" required><br>
 
-        {% if processed_image %}
-            <h3>Processed Image:</h3>
-            <img src="{{ url_for('static', filename=processed_image) }}>
-            <a href="{{ url_for('static', filename=processed_image) }}">
-        {% endif %}
+        <label for="optical_source">Optical Source:</label>
+        <select name="optical_source">
+            <option value="LED">LED</option>
+            <option value="Laser Diode">Laser Diode</option>
+        </select><br>
+
+        <label for="optical_detector">Optical Detector:</label>
+        <select name="optical_detector">
+            <option value="PIN Photodiode">PIN Photodiode</option>
+            <option value="Avalanche Photodiode">Avalanche Photodiode</option>
+        </select><br>
+
+        <button type="submit">Simulate</button>
+    </form>
+</body>
+</html>
