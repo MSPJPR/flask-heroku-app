@@ -1,55 +1,41 @@
-from flask import Flask, render_template, request, redirect, url_for
-from PIL import Image, ImageEnhance, ImageFilter
-import os
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-# Ensure the 'static' folder exists for storing processed images
-if not os.path.exists('static'):
-    os.makedirs('static')
-
-# Route for home page
 @app.route('/')
-def home():
+def index():
     return render_template('index.html')
 
-# Route for processing the image
-@app.route('/process', methods=['POST'])
-def process_image():
-    if 'image' not in request.files:
-        return redirect(request.url)
+@app.route('/simulate', methods=['POST'])
+def simulate():
+    fiber_type = request.form['fiber_type']
+    distance = request.form['distance']
+    optical_source = request.form['optical_source']
+    optical_detector = request.form['optical_detector']
 
-    image_file = request.files['image']
-    if image_file.filename == '':
-        return redirect(request.url)
+    # Validate distance input
+    try:
+        distance = float(distance)
+        if distance <= 0:
+            raise ValueError("Distance must be positive.")
+    except ValueError as e:
+        return f"Input Error: {str(e)}", 400  # Return a bad request error
 
-    # Open the image
-    img = Image.open(image_file)
+    # Example calculation of signal strength
+    signal_strength = calculate_signal_strength(fiber_type, distance, optical_source, optical_detector)
 
-    # Get the selected filter from the form
-    filter_option = request.form.get('filter')
+    # Render results page with the computed signal strength
+    return render_template('result.html', signal_strength=signal_strength)
 
-    # Apply the selected filter
-    if filter_option == 'brightness':
-        enhancer = ImageEnhance.Brightness(img)
-        img = enhancer.enhance(1.5)
-    elif filter_option == 'contrast':                                           enhancer = ImageEnhance.Contrast(img)
-        img = enhancer.enhance(1.5)
-    elif filter_option == 'grayscale':
-        img = img.convert('L')
-    elif filter_option == 'sharpen':
-        img = img.filter(ImageFilter.SHARPEN)
-    elif filter_option == 'smooth':
-        img = img.filter(ImageFilter.SMOOTH)
-    elif filter_option == 'compress':
-        img = img.convert('RGB')
+def calculate_signal_strength(fiber_type, distance, optical_source, optical_detector):
+    # Placeholder logic for calculating signal strength based on parameters
+    # You can replace this with your actual calculation logic
+    if fiber_type == "Single-Mode":
+        strength = 20 - (0.2 * distance)  # Example formula
+    else:
+        strength = 15 - (0.5 * distance)  # Example formula for multi-mode
 
-    # Save the processed image in the 'static' directory
-    processed_image_path = os.path.join('static', 'processed_image.jpg')
-    img.save(processed_image_path)
-
-    # Pass the path to the processed image to the template
-    return render_template('index.html', processed_image='processed_ima>
+    return max(strength, 0)  # Ensure signal strength is non-negative
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port=8080)
